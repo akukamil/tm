@@ -79,6 +79,9 @@ var prog = {
 		prog.docClient.query({TableName: "dng7",	KeyConditionExpression: "m_key = :m_key and t_stamp>=:ts",
 		ProjectionExpression: "t_stamp, p_1, p_2, p_3",	ExpressionAttributeValues: { ":m_key": "BRICKS",":ts":start_ts}}, function(err,data){prog.render_kirp_chart(data,"bricks","Потребление газа (завод Брикс)")});
 			
+		prog.docClient.query({TableName: "dng7",	KeyConditionExpression: "m_key = :m_key and t_stamp>=:ts",
+		ProjectionExpression: "t_stamp, p_1, p_2, p_3",	ExpressionAttributeValues: { ":m_key": "ASFALT",":ts":start_ts}}, function(err,data){prog.render_kirp_chart(data,"asfalt","Потребление газа (асфальтовый завод)")});
+			
 		//prog.docClient.query({TableName: "dng7",	KeyConditionExpression: "m_key = :m_key and t_stamp>=:ts",
 		//ProjectionExpression: "t_stamp, p_1, p_2, p_3",	ExpressionAttributeValues: { ":m_key": "ALLIANCE",":ts":start_ts}}, function(err,data){render_kirp_chart(data,"alliance","Потребление газа (завод Альянс)")});
 			
@@ -128,12 +131,12 @@ var prog = {
 		document.getElementById('zarya').style.display = 'none';
 		document.getElementById('sabur').style.display = 'none';
 		document.getElementById('kasp').style.display = 'none';
-			
+		document.getElementById('asfalt').style.display = 'none';
+		
 		prog.docClient.query({TableName: "dng7",	KeyConditionExpression: "m_key = :m_key and t_stamp>=:ts",
 		ProjectionExpression: "t_stamp, p_1, p_2, p_3",	ExpressionAttributeValues: { ":m_key": "BRICKS",":ts":start_ts}}, function(err,data){prog.render_kirp_chart(data,"bricks","Потребление газа (завод Брикс)")});
 
 	},
-
 
 	render_sf_chart : function(data, chart_name, m_title) {
 		data=data.Items
