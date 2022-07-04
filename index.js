@@ -141,7 +141,7 @@ var prog = {
 	render_sf_chart : function(data, chart_name, m_title) {
 		data=data.Items
 		var data_m = data.filter(data => data.PERIOD == "M");
-		var data_h = data.filter(data => data.PERIOD == "H");
+		var data_h = data.filter(data => data.PERIOD == "D");
 		data=0;
 		
 		var xv=[], q=[], v=[], t=[], p=[], vt=[];
