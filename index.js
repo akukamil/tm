@@ -16,10 +16,11 @@ var prog = {
 		}
 
 
-		let k1='AKIAVL'
-		let k2='PJFTNLKGOLA33I'
-		let k3='K4kpaGEdD0X'
-		let k4='WxMz7+G2xmSnTrFBV2xGhn4ixm4yI'
+
+		let k1='AKIAVLPJFT'
+		let k2='NLDJX2T6P6'
+		let k3='3BoFcUz1hYsWSn6N1'
+		let k4='5OHqWxkyfLswSLHpC1K/w2y'
 		
 		AWS.config.update({
 		  region: 'eu-west-2',
