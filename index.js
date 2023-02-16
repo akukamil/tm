@@ -32,7 +32,6 @@ var prog = {
 		prog.docClient = new AWS.DynamoDB.DocumentClient();
 
 
-
 		if (local_uid === 'dng') {
 			this.load_data_dng();			
 			return;
@@ -78,7 +77,7 @@ var prog = {
 		//ProjectionExpression: "t_stamp, PERIOD, p_1, p_2, p_3, p_4",	ExpressionAttributeValues: { ":m_key": "KARANAY",":ts":start_ts}}, function(err,data){prog.render_sf_chart(data,"sf3","Добыча ПГ на Каранай-Аул")});	
 			
 		prog.docClient.query({TableName: "dng7",	KeyConditionExpression: "m_key = :m_key and t_stamp>=:ts",
-		ProjectionExpression: "t_stamp, p_1, p_2, p_3, p_4",	ExpressionAttributeValues: { ":m_key": "BRICKS",":ts":start_ts}}, function(err,data){prog.render_kirp_chart(data,"bricks","Потребление газа (завод Брикс)")});
+		ProjectionExpression: "t_stamp, p_1, p_2, p_3, p_4",	ExpressionAttributeValues: { ":m_key": "BRICKS",":ts":start_ts}}, function(err,data){prog.render_brik_chart(data,"bricks","Потребление газа (завод Брикс)")});
 			
 		prog.docClient.query({TableName: "dng7",	KeyConditionExpression: "m_key = :m_key and t_stamp>=:ts",
 		ProjectionExpression: "t_stamp, p_1, p_2, p_3, p_4",	ExpressionAttributeValues: { ":m_key": "ASFALT",":ts":start_ts}}, function(err,data){prog.render_kirp_chart(data,"asfalt","Потребление газа (асфальтовый завод)")});
@@ -135,7 +134,7 @@ var prog = {
 		document.getElementById('asfalt').style.display = 'none';
 		
 		prog.docClient.query({TableName: "dng7",	KeyConditionExpression: "m_key = :m_key and t_stamp>=:ts",
-		ProjectionExpression: "t_stamp, p_1, p_2, p_3",	ExpressionAttributeValues: { ":m_key": "BRICKS",":ts":start_ts}}, function(err,data){prog.render_kirp_chart(data,"bricks","Потребление газа (завод Брикс)")});
+		ProjectionExpression: "t_stamp, p_1, p_2, p_3",	ExpressionAttributeValues: { ":m_key": "BRICKS",":ts":start_ts}}, function(err,data){prog.render_brik_chart(data,"bricks","Потребление газа (завод Брикс)")});
 
 	},
 
@@ -342,7 +341,77 @@ var prog = {
 		Plotly.newPlot(chart_name+"_up",plot_data,layout, {responsive: true}); 	
 
 
+		var start_ts_d=Math.floor(Date.now() / 1000)-8*86400;
+		var tableRef = document.getElementById(chart_name+'_table');		
+		row_cnt=1
+		prv_v=0
+		for (let i=0;i<data.length;i++) {	
+			
+			if (data[i].t_stamp>start_ts_d) {
+				
+				var newRow = tableRef.insertRow(row_cnt);
+				let dt=new Date(data[i].t_stamp*1000);
+				if (dt.getHours()===10) {			
+					newRow.insertCell(0).appendChild(document.createTextNode(dt.toLocaleString()));
+					newRow.insertCell(1).appendChild(document.createTextNode(Math.round(data[i].p_1)));
+					
+					if (prv_v===0)
+						newRow.insertCell(2).appendChild(document.createTextNode("-"));			
+					else
+						newRow.insertCell(2).appendChild(document.createTextNode(Math.round(data[i].p_1-prv_v)));
+					
+					newRow.insertCell(3).appendChild(document.createTextNode(data[i].p_2));
+					newRow.insertCell(4).appendChild(document.createTextNode(data[i].p_3));
+					prv_v=data[i].p_1
+					row_cnt++;				
+				}		        
+				
+			}
 
+		}
+	
+	},	
+	
+	render_brik_chart : function(data, chart_name, m_title) {
+	
+		data=data.Items
+
+		var xv=[], v=[],t=[],p=[], vso=[];
+		var start_ts_h=Math.floor(Date.now() / 1000)-3*86400;
+		for (var i=1; i< data.length;i++)
+		{
+			if (data[i].t_stamp>start_ts_h) {
+				xv.push(prog.timeConverter(data[i].t_stamp));
+				let time_diff = data[i].t_stamp - data[i-1].t_stamp;
+				
+				let day_v=Math.round(data[i].p_1-data[i-1].p_1);
+				let Vso=Math.round(data[i].p_1);
+				if (day_v<0)
+					day_v=null
+				v.push(day_v);
+				t.push(data[i].p_3);
+				p.push(data[i].p_2);
+				vso.push(Vso);
+			}
+		}
+		
+		
+		var plot_data=[
+		
+			{x:xv,y:v, name: '__V, м3__',mode: 'lines+markers', type: 'scatter',fillcolor: 'rgba(50, 50, 50,0.5)'},
+			{x:xv,y:t, name: '__T, C___',mode: 'lines+markers', type: 'scatter',fillcolor: 'rgba(50, 50, 50,0.5)'},
+			{x:xv,y:p, name: '__P, Атм_',mode: 'lines+markers', type: 'scatter',fillcolor: 'rgba(50, 50, 50,0.5)'},
+			{x:xv,y:vr, name: '__Vso, м3_',mode: 'lines+markers', type: 'scatter',fillcolor: 'rgba(50, 50, 50,0.5)', visible : 'legendonly'}
+		];		
+				
+		var layout = {
+		  title: m_title,
+		  responsive: true,
+		  autorange: true,
+		  showlegend: true
+		};
+				
+		Plotly.newPlot(chart_name+"_up",plot_data,layout, {responsive: true}); 	
 
 
 		var start_ts_d=Math.floor(Date.now() / 1000)-8*86400;
@@ -375,6 +444,8 @@ var prog = {
 		}
 	
 	},	
+	
+	
 	
 	render_mig_chart : function(data, chart_name, m_title) {
 		data=data.Items
