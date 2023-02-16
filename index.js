@@ -378,13 +378,13 @@ var prog = {
 
 		var xv=[], v=[],t=[],p=[], vso=[];
 		var start_ts_h=Math.floor(Date.now() / 1000)-3*86400;
-		for (var i=2; i< data.length;i++)
+		for (var i=1; i< data.length;i++)
 		{
 			if (data[i].t_stamp>start_ts_h) {
 				xv.push(prog.timeConverter(data[i].t_stamp));
-				let time_diff = data[i].t_stamp - data[i-2].t_stamp;
+				let time_diff = data[i].t_stamp - data[i-1].t_stamp;
 				
-				let day_v=Math.round(3600*(data[i].p_1-data[i-2].p_1)/time_diff);
+				let day_v=Math.round(3600*(data[i].p_1-data[i-1].p_1)/time_diff);
 				let Vso=Math.round(data[i].p_1);
 				if (day_v<0)
 					day_v=null
@@ -399,7 +399,7 @@ var prog = {
 		var plot_data=[
 		
 			{x:xv,y:v, name: '__V, м3__',mode: 'lines+markers', type: 'scatter',fillcolor: 'rgba(50, 50, 50,0.5)'},
-			{x:xv,y:t, name: '__T, C___',mode: 'lines+markers', type: 'scatter',fillcolor: 'rgba(50, 50, 50,0.5)', visible : 'legendonly'},
+			{x:xv,y:t, name: '__T, C___',mode: 'lines+markers', type: 'scatter',fillcolor: 'rgba(50, 50, 50,0.5)'},
 			{x:xv,y:p, name: '__P, Атм_',mode: 'lines+markers', type: 'scatter',fillcolor: 'rgba(50, 50, 50,0.5)', visible : 'legendonly'},
 			{x:xv,y:vso, name: '__Vso, м3_',mode: 'lines+markers', type: 'scatter',fillcolor: 'rgba(50, 50, 50,0.5)', visible : 'legendonly'}
 		];		
