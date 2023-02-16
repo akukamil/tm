@@ -427,7 +427,7 @@ var prog = {
 				const dt=new Date(data[i].t_stamp*1000);
 				const day_num=dt.getDate();
 				
-				if (dt.getHours()>=10 && day_of_check!==day_num) {			
+				if (dt.getHours()===10 && day_of_check!==day_num) {			
 					newRow.insertCell(0).appendChild(document.createTextNode(dt.toLocaleString()));
 					newRow.insertCell(1).appendChild(document.createTextNode(Math.round(data[i].p_1)));
 					
