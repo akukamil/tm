@@ -418,13 +418,16 @@ var prog = {
 		var tableRef = document.getElementById(chart_name+'_table');		
 		row_cnt=1
 		prv_v=0
+		day_of_check=-1;
 		for (let i=0;i<data.length;i++) {	
 			
 			if (data[i].t_stamp>start_ts_d) {
 				
 				var newRow = tableRef.insertRow(row_cnt);
-				let dt=new Date(data[i].t_stamp*1000);
-				if (dt.getHours()===10) {			
+				const dt=new Date(data[i].t_stamp*1000);
+				const day_num=dt.getDate();
+				
+				if (dt.getHours()>=10 && day_of_check!==day_num) {			
 					newRow.insertCell(0).appendChild(document.createTextNode(dt.toLocaleString()));
 					newRow.insertCell(1).appendChild(document.createTextNode(Math.round(data[i].p_1)));
 					
@@ -436,7 +439,8 @@ var prog = {
 					newRow.insertCell(3).appendChild(document.createTextNode(data[i].p_2));
 					newRow.insertCell(4).appendChild(document.createTextNode(data[i].p_3));
 					prv_v=data[i].p_1
-					row_cnt++;				
+					row_cnt++;		
+					day_of_check=day_num;
 				}		        
 				
 			}
