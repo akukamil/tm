@@ -378,13 +378,14 @@ var prog = {
 
 		var xv=[], v=[],t=[],p=[], vso=[];
 		var start_ts_h=Math.floor(Date.now() / 1000)-3*86400;
-		for (var i=1; i< data.length;i++)
+		const window_size=15;
+		for (var i=window_size; i< data.length;i++)
 		{
 			if (data[i].t_stamp>start_ts_h) {
 				xv.push(prog.timeConverter(data[i].t_stamp));
-				let time_diff = data[i].t_stamp - data[i-1].t_stamp;
+				let time_diff = data[i].t_stamp - data[i-window_size].t_stamp;
 				
-				let day_v=Math.round(3600*(data[i].p_1-data[i-1].p_1)/time_diff);
+				let day_v=Math.round(3600*(data[i].p_1-data[i-window_size].p_1)/time_diff);
 				let Vso=Math.round(data[i].p_1);
 				if (day_v<0)
 					day_v=null
