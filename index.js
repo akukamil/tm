@@ -31,12 +31,14 @@ var prog = {
 			
 		prog.docClient = new AWS.DynamoDB.DocumentClient();
 
-
+		const td=new Date();
+		if(td.getTimezoneOffset()!==-180)
+			alert('Неправильный часовой пояс');
+		
 		if (local_uid === 'dng') {
 			this.load_data_dng();			
 			return;
 		}
-
 		
 		if (local_uid === 'brik') {
 			this.load_data_brik();			
