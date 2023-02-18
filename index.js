@@ -475,7 +475,7 @@ var prog = {
 	
 	},	
 	
-	render_test_chart function(data, chart_name, m_title) {
+	render_test_chart: function(data, chart_name, m_title) {
 		
 		data=data.Items
 
