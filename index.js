@@ -43,6 +43,12 @@ var prog = {
 			return;			
 		}
 		
+		if (local_uid === 'test') {
+			this.load_test_brik();			
+			return;			
+		}
+		
+		
 		this.not_auth();
 		
 		
@@ -136,6 +142,25 @@ var prog = {
 		prog.docClient.query({TableName: "dng7",	KeyConditionExpression: "m_key = :m_key and t_stamp>=:ts",
 		ProjectionExpression: "t_stamp, p_1, p_2, p_3",	ExpressionAttributeValues: { ":m_key": "BRICKS",":ts":start_ts}}, function(err,data){prog.render_brik_chart(data,"bricks","Потребление газа (завод Брикс)")});
 
+	},
+	
+	load_data_test : function()	{   
+
+		var start_ts=Math.floor(Date.now() / 1000)-40*86400;
+		
+		document.getElementById('sf0').style.display = 'none';
+		document.getElementById('sf1').style.display = 'none';
+		document.getElementById('sf2').style.display = 'none';
+		document.getElementById('sf3').style.display = 'none';
+		document.getElementById('alliance').style.display = 'none';
+		document.getElementById('zarya').style.display = 'none';
+		document.getElementById('sabur').style.display = 'none';
+		document.getElementById('kasp').style.display = 'none';
+		document.getElementById('asfalt').style.display = 'none';
+		
+		prog.docClient.query({TableName: "dng7",	KeyConditionExpression: "m_key = :m_key and t_stamp>=:ts",
+		ProjectionExpression: "t_stamp, p_1, p_2, p_3, p_4",	ExpressionAttributeValues: { ":m_key": "SABUR",":ts":start_ts}}, function(err,data){prog.render_test_chart(data,"sabur","Потребление газа (завод Сабур)")});	
+		
 	},
 
 	render_sf_chart : function(data, chart_name, m_title) {
@@ -450,7 +475,83 @@ var prog = {
 	
 	},	
 	
+	render_test_chart function(data, chart_name, m_title) {
+		
+		data=data.Items
+
+		var xv=[], v=[],t=[],p=[], vr=[];
+		var start_ts_h=Math.floor(Date.now() / 1000)-3*86400;
+		console.log('start_ts_h',start_ts_h);
+		console.log(data);
+		for (var i=1; i< data.length;i++)
+		{
+			if (data[i].t_stamp>start_ts_h) {
+				xv.push(prog.timeConverter(data[i].t_stamp));
+				let time_diff = data[i].t_stamp - data[i-1].t_stamp;
+				
+				let day_v=Math.round(data[i].p_1-data[i-1].p_1);
+				let day_vr=Math.round(data[i].p_4-data[i-1].p_4);
+				if (day_v<0 || time_diff!==3600)
+					day_v=null
+				v.push(day_v);
+				t.push(data[i].p_3);
+				p.push(data[i].p_2);
+				vr.push(day_vr);				
+			}
+		}
+		
+		
+		var plot_data=[
+		
+			{x:xv,y:v, name: '__V, м3__',mode: 'lines+markers', type: 'scatter',fillcolor: 'rgba(50, 50, 50,0.5)'},
+			{x:xv,y:t, name: '__T, C___',mode: 'lines+markers', type: 'scatter',fillcolor: 'rgba(50, 50, 50,0.5)'},
+			{x:xv,y:p, name: '__P, Атм_',mode: 'lines+markers', type: 'scatter',fillcolor: 'rgba(50, 50, 50,0.5)'},
+			{x:xv,y:vr, name: '__Vр, м3_',mode: 'lines+markers', type: 'scatter',fillcolor: 'rgba(50, 50, 50,0.5)', visible : 'legendonly'}
+		];		
+				
+		var layout = {
+		  title: m_title,
+		  responsive: true,
+		  autorange: true,
+		  showlegend: true
+		};
+				
+		Plotly.newPlot(chart_name+"_up",plot_data,layout, {responsive: true}); 	
+
+
+		var start_ts_d=Math.floor(Date.now() / 1000)-8*86400;
+		var tableRef = document.getElementById(chart_name+'_table');		
+		row_cnt=1
+		prv_v=0
+		
+		
+		console.log('start_ts_d',start_ts_d);
+		for (let i=0;i<data.length;i++) {	
+			
+			if (data[i].t_stamp>start_ts_d) {
+				
+				var newRow = tableRef.insertRow(row_cnt);
+				let dt=new Date(data[i].t_stamp*1000);
+				if (dt.getHours()===10) {			
+					newRow.insertCell(0).appendChild(document.createTextNode(dt.toLocaleString()));
+					newRow.insertCell(1).appendChild(document.createTextNode(Math.round(data[i].p_1)));
+					
+					if (prv_v===0)
+						newRow.insertCell(2).appendChild(document.createTextNode("-"));			
+					else
+						newRow.insertCell(2).appendChild(document.createTextNode(Math.round(data[i].p_1-prv_v)));
+					
+					newRow.insertCell(3).appendChild(document.createTextNode(data[i].p_2));
+					newRow.insertCell(4).appendChild(document.createTextNode(data[i].p_3));
+					prv_v=data[i].p_1
+					row_cnt++;				
+				}		        
+				
+			}
+
+		}
 	
+	}
 	
 	render_mig_chart : function(data, chart_name, m_title) {
 		data=data.Items
