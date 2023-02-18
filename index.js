@@ -551,7 +551,7 @@ var prog = {
 
 		}
 	
-	}
+	},
 	
 	render_mig_chart : function(data, chart_name, m_title) {
 		data=data.Items
