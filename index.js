@@ -154,7 +154,7 @@ var prog = {
 		document.getElementById('sf3').style.display = 'none';
 		document.getElementById('alliance').style.display = 'none';
 		document.getElementById('zarya').style.display = 'none';
-		document.getElementById('sabur').style.display = 'none';
+		document.getElementById('bricks').style.display = 'none';
 		document.getElementById('kasp').style.display = 'none';
 		document.getElementById('asfalt').style.display = 'none';
 		
