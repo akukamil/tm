@@ -532,7 +532,8 @@ var prog = {
 				
 				var newRow = tableRef.insertRow(row_cnt);
 				let dt=new Date(data[i].t_stamp*1000);
-				if (dt.getHours()===10) {			
+				const hour=dt.getHours();
+				if (hour===10) {			
 					newRow.insertCell(0).appendChild(document.createTextNode(dt.toLocaleString()));
 					newRow.insertCell(1).appendChild(document.createTextNode(Math.round(data[i].p_1)));
 					
