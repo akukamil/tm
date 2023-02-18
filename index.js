@@ -44,7 +44,7 @@ var prog = {
 		}
 		
 		if (local_uid === 'test') {
-			this.load_test_brik();			
+			this.load_data_test();			
 			return;			
 		}
 		
