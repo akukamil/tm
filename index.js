@@ -67,7 +67,6 @@ var prog = {
 
 		var start_ts=Math.floor(Date.now() / 1000)-40*86400;
 		
-		document.getElementById('sf0').style.display = 'none';
 		document.getElementById('sf1').style.display = 'none';
 		document.getElementById('alliance').style.display = 'none';
 		document.getElementById('zarya').style.display = 'none';
@@ -80,6 +79,9 @@ var prog = {
 		
 		prog.docClient.query({TableName: "dng7",	KeyConditionExpression: "m_key = :m_key and t_stamp>=:ts",
 		ProjectionExpression: "t_stamp, PERIOD, p_1, p_2, p_3, p_4",	ExpressionAttributeValues: { ":m_key": "GU_4",":ts":start_ts}}, function(err,data){prog.render_sf_chart(data,"sf2","Добыча ПГ на ГУ-4")});	
+		
+		prog.docClient.query({TableName: "dng7",	KeyConditionExpression: "m_key = :m_key and t_stamp>=:ts",
+		ProjectionExpression: "t_stamp, PERIOD, p_1, p_2, p_3, p_4",	ExpressionAttributeValues: { ":m_key": "GU_4_2",":ts":start_ts}}, function(err,data){prog.render_sf_chart(data,"sf0","Добыча ПГ на ГУ-4 (Каспийск)")});	
 		
 		prog.docClient.query({TableName: "dng7",	KeyConditionExpression: "m_key = :m_key and t_stamp>=:ts",
 		ProjectionExpression: "t_stamp, PERIOD, p_1, p_2, p_3, p_4",	ExpressionAttributeValues: { ":m_key": "Karanay",":ts":start_ts}}, function(err,data){prog.render_sf_chart(data,"sf3","Добыча ПГ на Каранай-Аул")});	
@@ -95,9 +97,6 @@ var prog = {
 			
 		prog.docClient.query({TableName: "dng7",	KeyConditionExpression: "m_key = :m_key and t_stamp>=:ts",
 		ProjectionExpression: "t_stamp, p_1, p_2, p_3, p_4",	ExpressionAttributeValues: { ":m_key": "SABUR",":ts":start_ts}}, function(err,data){prog.render_kirp_chart(data,"sabur","Потребление газа (завод Сабур)")});	
-		
-		//prog.docClient.query({TableName: "dng7",	KeyConditionExpression: "m_key = :m_key and t_stamp>=:ts",
-		//ProjectionExpression: "t_stamp, p_1, p_2, p_3",	ExpressionAttributeValues: { ":m_key": "ZARYA",":ts":start_ts}}, function(err,data){render_kirp_chart(data,"zarya","Потребление газа (завод Заря)")});	
 		
 		prog.docClient.query({TableName: "dng7",	KeyConditionExpression: "m_key = :m_key and t_stamp>=:ts",
 		ProjectionExpression: "t_stamp, p_1, p_2, p_3",	ExpressionAttributeValues: { ":m_key": "KASP",":ts":start_ts}}, function(err,data){prog.render_kirp_chart(data,"kasp","Потребление газа (Каспий Тепло Сервис)")});		
