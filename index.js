@@ -1,8 +1,7 @@
 
 var prog = {
 	
-	
-	
+		
 	login : function()	{
 
 		let local_uid = '';
