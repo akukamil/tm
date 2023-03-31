@@ -119,7 +119,7 @@ var prog = {
 			prog.docClient.query({TableName: "dng7",	KeyConditionExpression: "m_key = :m_key and t_stamp>=:ts",
 			ProjectionExpression: "t_stamp, p_1, p_2, p_3, p_4",	ExpressionAttributeValues: { ":m_key": "BRICKS",":ts":start_ts}}, function(err,data){res(data)})	
 		})
-		prog.render_kirp_chart2(data,"bricks","Потребление газа (завод Брикс)")
+		prog.render_kirp_chart(data,"bricks","Потребление газа (завод Брикс)")
 				
 		data=await new Promise(res=>{			
 			prog.docClient.query({TableName: "dng7",	KeyConditionExpression: "m_key = :m_key and t_stamp>=:ts",
@@ -192,10 +192,9 @@ var prog = {
 
 		var start_ts=Math.floor(Date.now() / 1000)-40*86400;
 		
-		document.getElementById('sf0').style.display = 'none';
-		document.getElementById('sf1').style.display = 'none';
-		document.getElementById('sf2').style.display = 'none';
-		document.getElementById('sf3').style.display = 'none';
+		document.getElementById('sfGU4').style.display = 'none';
+		document.getElementById('sfGU4_2').style.display = 'none';
+		document.getElementById('sfKARANAY').style.display = 'none';
 		document.getElementById('alliance').style.display = 'none';
 		document.getElementById('zarya').style.display = 'none';
 		document.getElementById('sabur').style.display = 'none';
