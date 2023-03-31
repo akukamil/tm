@@ -67,31 +67,89 @@ var prog = {
 		
 	},
 
-	load_data_dng : function()	{   
+	async load_data_dng()	{   
 
 		var start_ts=Math.floor(Date.now() / 1000)-40*86400;
 		
-		document.getElementById('sf1').style.display = 'none';
+
 		document.getElementById('alliance').style.display = 'none';
-		document.getElementById('zarya').style.display = 'none';
-		//document.getElementById('sf3').style.display = 'none';
+		//document.getElementById('zarya').style.display = 'none';
 		//docClient.query({TableName: "dng7",	KeyConditionExpression: "m_key = :m_key and t_stamp>=:ts",	
 		//ProjectionExpression: "t_stamp, PERIOD, p_1, p_2, p_3, p_4",	ExpressionAttributeValues: { ":m_key": "AGRS_1",":ts":start_ts}}, function(err,data){render_sf_chart(data,"sf0","Добыча ПНГ на АГРС Махачкала")});	
 		
 		//docClient.query({TableName: "dng7",	KeyConditionExpression: "m_key = :m_key and t_stamp>=:ts",
 		//ProjectionExpression: "t_stamp, PERIOD, p_1, p_2, p_3, p_4",	ExpressionAttributeValues: { ":m_key": "AGRS_2",":ts":start_ts}}, function(err,data){render_sf_chart(data,"sf1","Добыча ПГ на АГРС Махачкала")});	
 		
-		prog.docClient.query({TableName: "dng7",	KeyConditionExpression: "m_key = :m_key and t_stamp>=:ts",
-		ProjectionExpression: "t_stamp, PERIOD, p_1, p_2, p_3, p_4",	ExpressionAttributeValues: { ":m_key": "GU_4",":ts":start_ts}}, function(err,data){prog.render_sf_chart(data,"sf2","Добыча ПГ на ГУ-4")});	
+		var data;
 		
-		prog.docClient.query({TableName: "dng7",	KeyConditionExpression: "m_key = :m_key and t_stamp>=:ts",
-		ProjectionExpression: "t_stamp, PERIOD, p_1, p_2, p_3, p_4",	ExpressionAttributeValues: { ":m_key": "GU_4_2",":ts":start_ts}}, function(err,data){prog.render_sf_chart(data,"sf0","Добыча ПГ на ГУ-4 (Каспийск)")});	
+		data=await new Promise(res=>{			
+			prog.docClient.query({TableName: "dng7",	KeyConditionExpression: "m_key = :m_key and t_stamp>=:ts",
+			ProjectionExpression: "t_stamp, PERIOD, p_1, p_2, p_3, p_4",	ExpressionAttributeValues: { ":m_key": "GU_4",":ts":start_ts}}, function(err,data){res(data)})	
+		})
+		prog.render_sf_chart(data,"sfGU4","Добыча ПГ на ГУ-4");	
+		
+		
+		data=await new Promise(res=>{			
+			prog.docClient.query({TableName: "dng7",	KeyConditionExpression: "m_key = :m_key and t_stamp>=:ts",
+			ProjectionExpression: "t_stamp, PERIOD, p_1, p_2, p_3, p_4",	ExpressionAttributeValues: { ":m_key": "GU_4_2",":ts":start_ts}}, function(err,data){res(data)})	
+		})
+		prog.render_sf_chart(data,"sfGU4_2","Добыча ПГ на ГУ-4 (Каспийск)");	
+		
+		
+		const data2=await new Promise(res=>{			
+			prog.docClient.query({TableName: "dng7",	KeyConditionExpression: "m_key = :m_key and t_stamp>=:ts",
+			ProjectionExpression: "t_stamp, p_1, p_2, p_3",	ExpressionAttributeValues: { ":m_key": "KASP",":ts":start_ts}}, function(err,data){res(data)})	
+		})
+		prog.render_kirp_chart3(data2,data,"kasp","Потребление газа (Каспий Тепло Сервис)")
+		
+		
+		data=await new Promise(res=>{			
+			prog.docClient.query({TableName: "dng7",	KeyConditionExpression: "m_key = :m_key and t_stamp>=:ts",
+			ProjectionExpression: "t_stamp, PERIOD, p_1, p_2, p_3, p_4",	ExpressionAttributeValues: { ":m_key": "Karanay",":ts":start_ts}}, function(err,data){res(data)})	
+		})
+		prog.render_sf_chart(data,"sfKARANAY","Добыча ПГ на Каранай-Аул")
+		
+		data=await new Promise(res=>{			
+			prog.docClient.query({TableName: "dng7",	KeyConditionExpression: "m_key = :m_key and t_stamp>=:ts",
+			ProjectionExpression: "t_stamp, p_1, p_2, p_3, p_4",	ExpressionAttributeValues: { ":m_key": "ZARYA",":ts":start_ts}}, function(err,data){res(data)})	
+		})
+		prog.render_kirp_chart(data,"zarya","Потребление газа (завод Заря)")		
+		
+		data=await new Promise(res=>{			
+			prog.docClient.query({TableName: "dng7",	KeyConditionExpression: "m_key = :m_key and t_stamp>=:ts",
+			ProjectionExpression: "t_stamp, p_1, p_2, p_3, p_4",	ExpressionAttributeValues: { ":m_key": "BRICKS",":ts":start_ts}}, function(err,data){res(data)})	
+		})
+		prog.render_kirp_chart2(data,"bricks","Потребление газа (завод Брикс)")
+				
+		data=await new Promise(res=>{			
+			prog.docClient.query({TableName: "dng7",	KeyConditionExpression: "m_key = :m_key and t_stamp>=:ts",
+			ProjectionExpression: "t_stamp, p_1, p_2, p_3, p_4",	ExpressionAttributeValues: { ":m_key": "ASFALT",":ts":start_ts}}, function(err,data){res(data)})	
+		})
+		prog.render_kirp_chart(data,"asfalt","Потребление газа (асфальтовый завод)")
+				
+		data=await new Promise(res=>{			
+			prog.docClient.query({TableName: "dng7",	KeyConditionExpression: "m_key = :m_key and t_stamp>=:ts",
+			ProjectionExpression: "t_stamp, p_1, p_2, p_3, p_4",	ExpressionAttributeValues: { ":m_key": "SABUR",":ts":start_ts}}, function(err,data){res(data)})	
+		})
+		prog.render_kirp_chart(data,"sabur","Потребление газа (завод Сабур)")
+				
+				
+
+		
+		
+
+		return;
+		
+		
+		
+		
+
 		
 		prog.docClient.query({TableName: "dng7",	KeyConditionExpression: "m_key = :m_key and t_stamp>=:ts",
 		ProjectionExpression: "t_stamp, PERIOD, p_1, p_2, p_3, p_4",	ExpressionAttributeValues: { ":m_key": "Karanay",":ts":start_ts}}, function(err,data){prog.render_sf_chart(data,"sf3","Добыча ПГ на Каранай-Аул")});	
 			
 		prog.docClient.query({TableName: "dng7",	KeyConditionExpression: "m_key = :m_key and t_stamp>=:ts",
-		ProjectionExpression: "t_stamp, p_1, p_2, p_3, p_4",	ExpressionAttributeValues: { ":m_key": "BRICKS",":ts":start_ts}}, function(err,data){prog.render_brik_chart(data,"bricks","Потребление газа (завод Брикс)")});
+		ProjectionExpression: "t_stamp, p_1, p_2, p_3, p_4",	ExpressionAttributeValues: { ":m_key": "BRICKS",":ts":start_ts}}, function(err,data){prog.render_kirp_chart(data,"bricks","Потребление газа (завод Брикс)")});
 			
 		prog.docClient.query({TableName: "dng7",	KeyConditionExpression: "m_key = :m_key and t_stamp>=:ts",
 		ProjectionExpression: "t_stamp, p_1, p_2, p_3, p_4",	ExpressionAttributeValues: { ":m_key": "ASFALT",":ts":start_ts}}, function(err,data){prog.render_kirp_chart(data,"asfalt","Потребление газа (асфальтовый завод)")});
@@ -145,7 +203,7 @@ var prog = {
 		document.getElementById('asfalt').style.display = 'none';
 		
 		prog.docClient.query({TableName: "dng7",	KeyConditionExpression: "m_key = :m_key and t_stamp>=:ts",
-		ProjectionExpression: "t_stamp, p_1, p_2, p_3",	ExpressionAttributeValues: { ":m_key": "BRICKS",":ts":start_ts}}, function(err,data){prog.render_brik_chart(data,"bricks","Потребление газа (завод Брикс)")});
+		ProjectionExpression: "t_stamp, p_1, p_2, p_3",	ExpressionAttributeValues: { ":m_key": "BRICKS",":ts":start_ts}}, function(err,data){prog.render_kirp_chart(data,"bricks","Потребление газа (завод Брикс)")});
 
 	},
 	
@@ -421,7 +479,7 @@ var prog = {
 	
 	},	
 	
-	render_brik_chart : function(data, chart_name, m_title) {
+	render_kirp_chart2 : function(data, chart_name, m_title) {
 	
 		data=data.Items
 
@@ -499,6 +557,98 @@ var prog = {
 	
 	},	
 	
+	render_kirp_chart3 : function(data,data2, chart_name, m_title) {
+	
+		data=data.Items
+
+		//это данные ек
+		var xv=[], v=[],t=[],p=[], vr=[];
+		var start_ts_h=Math.floor(Date.now() / 1000)-3*86400;
+		for (var i=1; i< data.length;i++)
+		{
+			if (data[i].t_stamp>start_ts_h) {
+				xv.push(prog.timeConverter(data[i].t_stamp));
+				let time_diff = data[i].t_stamp - data[i-1].t_stamp;
+				
+				let day_v=Math.round(data[i].p_1-data[i-1].p_1);
+				let day_vr=Math.round(data[i].p_4-data[i-1].p_4);
+				if (day_v<0 || time_diff!==3600)
+					day_v=null
+				v.push(day_v);
+				t.push(data[i].p_3);
+				p.push(data[i].p_2);
+				vr.push(day_vr);
+			}
+		}
+		
+		//это данные от сф
+		data2=data2.Items
+		var xv2=[],q=[]
+		for (var i=2; i< data2.length;i+=1)
+		{
+			var dif_v=data2[i].p_3-data2[i-2].p_3;
+			if (dif_v>0)
+			{			
+			xv2.push(prog.timeConverter(data2[i].t_stamp));
+			var q_est=3600*(dif_v)/(data2[i].t_stamp-data2[i-2].t_stamp);
+			q.push(q_est);			
+			}
+		}
+		
+		
+		
+		
+		var plot_data=[
+		
+			{x:xv,y:v, name:  '__Q, м3/ч',mode: 'lines+markers', type: 'scatter',fillcolor: 'rgba(50, 50, 50,0.5)'},
+			{x:xv,y:t, name:  '__T, C___',mode: 'lines+markers', type: 'scatter',fillcolor: 'rgba(50, 50, 50,0.5)'},
+			{x:xv,y:p, name:  '__P, Атм_',mode: 'lines+markers', type: 'scatter',fillcolor: 'rgba(50, 50, 50,0.5)'},
+			{x:xv,y:vr, name: '__Vр, м3_',mode: 'lines+markers', type: 'scatter',fillcolor: 'rgba(50, 50, 50,0.5)', visible : 'legendonly'},
+			{x:xv2,y:q, name: '__Qsf, м3/ч',mode: 'lines', type: 'scatter',  line: {  color: 'rgba(255, 18, 11,0.5)'}, visible : 'legendonly'}
+		];		
+				
+		var layout = {
+		  title: m_title,
+		  responsive: true,
+		  autorange: true,
+		  showlegend: true
+		};
+				
+		Plotly.newPlot(chart_name+"_up",plot_data,layout, {responsive: true}); 	
+
+
+		var start_ts_d=Math.floor(Date.now() / 1000)-8*86400;
+		var tableRef = document.getElementById(chart_name+'_table');		
+		row_cnt=1
+		prv_v=0
+		for (let i=0;i<data.length;i++) {	
+			
+			if (data[i].t_stamp>start_ts_d) {
+				
+				var newRow = tableRef.insertRow(row_cnt);
+				let dt=new Date(data[i].t_stamp*1000);
+				if (dt.getHours()===10) {			
+					newRow.insertCell(0).appendChild(document.createTextNode(dt.toLocaleString()));
+					newRow.insertCell(1).appendChild(document.createTextNode(Math.round(data[i].p_1)));
+					
+					if (prv_v===0)
+						newRow.insertCell(2).appendChild(document.createTextNode("-"));			
+					else
+						newRow.insertCell(2).appendChild(document.createTextNode(Math.round(data[i].p_1-prv_v)));
+					
+					newRow.insertCell(3).appendChild(document.createTextNode(data[i].p_2));
+					newRow.insertCell(4).appendChild(document.createTextNode(data[i].p_3));
+					prv_v=data[i].p_1
+					row_cnt++;				
+				}		        
+				
+			}
+
+		}
+	
+	
+	},	
+		
 	render_test_chart: function(data, chart_name, m_title) {
 		
 		data=data.Items
@@ -642,8 +792,7 @@ var prog = {
 		var formattedTime = hours + '-' + minutes.substr(-2) + '-' + seconds.substr(-2);
 		return date;
 	}
-	
-	
+		
 	
 }
 
