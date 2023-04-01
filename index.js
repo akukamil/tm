@@ -210,10 +210,9 @@ var prog = {
 
 		var start_ts=Math.floor(Date.now() / 1000)-40*86400;
 		
-		document.getElementById('sf0').style.display = 'none';
-		document.getElementById('sf1').style.display = 'none';
-		document.getElementById('sf2').style.display = 'none';
-		document.getElementById('sf3').style.display = 'none';
+		document.getElementById('sfGU4').style.display = 'none';
+		document.getElementById('sfGU4_2').style.display = 'none';
+		document.getElementById('sfKARANAY').style.display = 'none';
 		document.getElementById('alliance').style.display = 'none';
 		document.getElementById('zarya').style.display = 'none';
 		document.getElementById('sabur').style.display = 'none';
