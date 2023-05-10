@@ -1,6 +1,8 @@
 
 var prog = {
 	
+
+	cur_time:0,
 		
 	login : function()	{
 
@@ -14,8 +16,8 @@ var prog = {
 			try {localStorage.setItem('login', local_uid)} catch(e){}
 		}
 
-
-
+		this.cur_time=Date.now()*0.001+1000;
+		
 		let k1='AKIAVLPJFT'
 		let k2='NLDJX2T6P6'
 		let k3='3BoFcUz1hYsWSn6N1'
@@ -259,6 +261,7 @@ var prog = {
 			vt.push(data_m[i].p_4);
 		}
 		
+		
 		//вычисляем мгновенный дебит
 		var xv2=[]
 		for (var i=2; i< data_m.length;i+=1)
@@ -291,7 +294,7 @@ var prog = {
 			yaxis2: {	side: 'right',	showgrid: false,ticks: '',	showticklabels: false,hoverformat: '.0f' },
 
 			xaxis: {
-			autorange: true,
+			range:[prog.timeConverter(data_m[0].t_stamp), prog.timeConverter(prog.cur_time)],
 			rangeselector: {buttons: [			
 
 			{
@@ -407,12 +410,15 @@ var prog = {
 	render_kirp_chart : function(data, chart_name, m_title) {
 	
 		data=data.Items
-
+		var min_time;
 		var xv=[], v=[],t=[],p=[], vr=[];
 		var start_ts_h=Math.floor(Date.now() / 1000)-3*86400;
 		for (var i=1; i< data.length;i++)
 		{
 			if (data[i].t_stamp>start_ts_h) {
+				
+				if(!min_time) min_time=data[i].t_stamp;
+				
 				xv.push(prog.timeConverter(data[i].t_stamp));
 				let time_diff = data[i].t_stamp - data[i-1].t_stamp;
 				
@@ -437,8 +443,8 @@ var prog = {
 				
 		var layout = {
 		  title: m_title,
+		  xaxis: {range: [prog.timeConverter(min_time), prog.timeConverter(prog.cur_time)]},
 		  responsive: true,
-		  autorange: true,
 		  showlegend: true
 		};
 				
@@ -559,11 +565,13 @@ var prog = {
 		data=data.Items
 
 		//это данные ек
+		var min_time;
 		var xv=[], v=[],t=[],p=[], vr=[];
 		var start_ts_h=Math.floor(Date.now() / 1000)-3*86400;
 		for (var i=1; i< data.length;i++)
 		{
 			if (data[i].t_stamp>start_ts_h) {
+				if(!min_time) min_time=data[i].t_stamp;
 				xv.push(prog.timeConverter(data[i].t_stamp));
 				let time_diff = data[i].t_stamp - data[i-1].t_stamp;
 				
@@ -592,9 +600,6 @@ var prog = {
 			}
 		}
 		
-		
-		
-		
 		var plot_data=[
 		
 			{x:xv,y:v, name:  '__Q, м3/ч',mode: 'lines+markers', type: 'scatter',fillcolor: 'rgba(50, 50, 50,0.5)'},
@@ -607,7 +612,7 @@ var prog = {
 		var layout = {
 		  title: m_title,
 		  responsive: true,
-		  autorange: true,
+		  xaxis: {range: [prog.timeConverter(min_time), prog.timeConverter(prog.cur_time)]},
 		  showlegend: true
 		};
 				
