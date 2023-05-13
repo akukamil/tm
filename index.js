@@ -435,10 +435,12 @@ var prog = {
 
 		var xv=[], v=[],t=[],p=[], vso=[];
 		var start_ts_h=Math.floor(Date.now() / 1000)-3*86400;
+		var min_time;
 		const window_size=15;
 		for (var i=window_size; i< data.length;i++)
 		{
 			if (data[i].t_stamp>start_ts_h) {
+				if(!min_time) min_time=data[i].t_stamp;
 				xv.push(prog.timeConverter(data[i].t_stamp));
 				let time_diff = data[i].t_stamp - data[i-window_size].t_stamp;
 				
@@ -465,7 +467,7 @@ var prog = {
 		var layout = {
 		  title: m_title,
 		  responsive: true,
-		  autorange: true,
+		  xaxis: {range: [prog.timeConverter(min_time), prog.timeConverter(prog.cur_time)]},
 		  showlegend: true
 		};
 				
