@@ -121,7 +121,7 @@ var prog = {
 			prog.docClient.query({TableName: "dng7",	KeyConditionExpression: "m_key = :m_key and t_stamp>=:ts",
 			ProjectionExpression: "t_stamp, p_1, p_2, p_3, p_4",	ExpressionAttributeValues: { ":m_key": "BRICKS",":ts":start_ts}}, function(err,data){res(data)})	
 		})
-		prog.render_kirp_chart(data,"bricks","Потребление газа (завод Брикс)")
+		prog.render_kirp_chart2(data,"bricks","Потребление газа (завод Брикс)")
 				
 		data=await new Promise(res=>{			
 			prog.docClient.query({TableName: "dng7",	KeyConditionExpression: "m_key = :m_key and t_stamp>=:ts",
@@ -135,59 +135,6 @@ var prog = {
 		})
 		prog.render_kirp_chart(data,"sabur","Потребление газа (завод Сабур)")
 				
-				
-
-		
-		
-
-		return;
-		
-		
-		
-		
-
-		
-		prog.docClient.query({TableName: "dng7",	KeyConditionExpression: "m_key = :m_key and t_stamp>=:ts",
-		ProjectionExpression: "t_stamp, PERIOD, p_1, p_2, p_3, p_4",	ExpressionAttributeValues: { ":m_key": "Karanay",":ts":start_ts}}, function(err,data){prog.render_sf_chart(data,"sf3","Добыча ПГ на Каранай-Аул")});	
-			
-		prog.docClient.query({TableName: "dng7",	KeyConditionExpression: "m_key = :m_key and t_stamp>=:ts",
-		ProjectionExpression: "t_stamp, p_1, p_2, p_3, p_4",	ExpressionAttributeValues: { ":m_key": "BRICKS",":ts":start_ts}}, function(err,data){prog.render_kirp_chart(data,"bricks","Потребление газа (завод Брикс)")});
-			
-		prog.docClient.query({TableName: "dng7",	KeyConditionExpression: "m_key = :m_key and t_stamp>=:ts",
-		ProjectionExpression: "t_stamp, p_1, p_2, p_3, p_4",	ExpressionAttributeValues: { ":m_key": "ASFALT",":ts":start_ts}}, function(err,data){prog.render_kirp_chart(data,"asfalt","Потребление газа (асфальтовый завод)")});
-			
-		//prog.docClient.query({TableName: "dng7",	KeyConditionExpression: "m_key = :m_key and t_stamp>=:ts",
-		//ProjectionExpression: "t_stamp, p_1, p_2, p_3",	ExpressionAttributeValues: { ":m_key": "ALLIANCE",":ts":start_ts}}, function(err,data){render_kirp_chart(data,"alliance","Потребление газа (завод Альянс)")});
-			
-		prog.docClient.query({TableName: "dng7",	KeyConditionExpression: "m_key = :m_key and t_stamp>=:ts",
-		ProjectionExpression: "t_stamp, p_1, p_2, p_3, p_4",	ExpressionAttributeValues: { ":m_key": "SABUR",":ts":start_ts}}, function(err,data){prog.render_kirp_chart(data,"sabur","Потребление газа (завод Сабур)")});	
-		
-		prog.docClient.query({TableName: "dng7",	KeyConditionExpression: "m_key = :m_key and t_stamp>=:ts",
-		ProjectionExpression: "t_stamp, p_1, p_2, p_3",	ExpressionAttributeValues: { ":m_key": "KASP",":ts":start_ts}}, function(err,data){prog.render_kirp_chart(data,"kasp","Потребление газа (Каспий Тепло Сервис)")});		
-			
-		/*prog.docClient.query({TableName: "dng7",	KeyConditionExpression: "m_key = :m_key and t_stamp>=:ts",
-		ProjectionExpression: "t_stamp, p_1",	ExpressionAttributeValues: { ":m_key": "IZB_RES_2",":ts":start_ts}}, function(err,data){render_bars_chart(data,"res0","РП Избербаш (Резервуар №2)")});
-		
-
-		prog.docClient.query({TableName: "dng7",	KeyConditionExpression: "m_key = :m_key and t_stamp>=:ts",
-		ProjectionExpression: "t_stamp, p_1, p_2, p_3",	ExpressionAttributeValues: { ":m_key": "RES_1",":ts":start_ts}	}, get_res_1);	
-		
-		prog.docClient.query({TableName: "dng7",	KeyConditionExpression: "m_key = :m_key and t_stamp>=:ts",
-		ProjectionExpression: "t_stamp, p_1, p_2, p_3",	ExpressionAttributeValues: { ":m_key": "RES_4",":ts":start_ts}}, get_res_4);
-		
-		prog.docClient.query({TableName: "dng7",	KeyConditionExpression: "m_key = :m_key and t_stamp>=:ts",
-		ProjectionExpression: "t_stamp, p_1, p_2, p_3",	ExpressionAttributeValues: { ":m_key": "RES_3",":ts":start_ts}	}, get_res_3);	
-		
-		docClient.query({TableName: "dng7",	KeyConditionExpression: "m_key = :m_key and t_stamp>=:ts",
-		ProjectionExpression: "t_stamp, p_1, p_2, p_3",	ExpressionAttributeValues: { ":m_key": "RES_5",":ts":start_ts}}, get_res_5);	
-		
-		prog.docClient.query({TableName: "dng7",	KeyConditionExpression: "m_key = :m_key and t_stamp>=:ts",
-		ProjectionExpression: "t_stamp, p_1",	ExpressionAttributeValues: { ":m_key": "MIG_1",":ts":start_ts}}, get_mig);	
-		
-		prog.docClient.query({TableName: "dng7",	KeyConditionExpression: "m_key = :m_key and t_stamp>=:ts",
-		ProjectionExpression: "t_stamp, p_1",	ExpressionAttributeValues: { ":m_key": "IZB_RES_2",":ts":start_ts}}, get_bars);	*/
-		
-
 	},
 
 	load_data_brik : function()	{   
@@ -204,7 +151,7 @@ var prog = {
 		document.getElementById('asfalt').style.display = 'none';
 		
 		prog.docClient.query({TableName: "dng7",	KeyConditionExpression: "m_key = :m_key and t_stamp>=:ts",
-		ProjectionExpression: "t_stamp, p_1, p_2, p_3",	ExpressionAttributeValues: { ":m_key": "BRICKS",":ts":start_ts}}, function(err,data){prog.render_kirp_chart(data,"bricks","Потребление газа (завод Брикс)")});
+		ProjectionExpression: "t_stamp, p_1, p_2, p_3",	ExpressionAttributeValues: { ":m_key": "BRICKS",":ts":start_ts}}, function(err,data){prog.render_kirp_chart2(data,"bricks","Потребление газа (завод Брикс)")});
 
 	},
 	
