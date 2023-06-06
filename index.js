@@ -442,7 +442,7 @@ var prog = {
 		var xv=[], v=[],t=[],p=[], vso=[];
 		var start_ts_h=Math.floor(Date.now() / 1000)-3*86400;
 		var min_time;
-		const window_size=15;
+		const window_size=5;
 		for (var i=window_size; i< data.length;i++)
 		{
 			if (data[i].t_stamp>start_ts_h) {
