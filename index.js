@@ -125,6 +125,12 @@ var prog = {
 				
 		data=await new Promise(res=>{			
 			prog.docClient.query({TableName: "dng7",	KeyConditionExpression: "m_key = :m_key and t_stamp>=:ts",
+			ProjectionExpression: "t_stamp, p_1, p_2, p_3, p_4",	ExpressionAttributeValues: { ":m_key": "OSMANOV",":ts":start_ts}}, function(err,data){res(data)})	
+		})
+		prog.render_kirp_chart2(data,"osmanov","Потребление газа (завод ИП ОСМАНОВ)")		
+				
+		data=await new Promise(res=>{			
+			prog.docClient.query({TableName: "dng7",	KeyConditionExpression: "m_key = :m_key and t_stamp>=:ts",
 			ProjectionExpression: "t_stamp, p_1, p_2, p_3, p_4",	ExpressionAttributeValues: { ":m_key": "ASPHALT",":ts":start_ts}}, function(err,data){res(data)})	
 		})
 		prog.render_kirp_chart(data,"asfalt","Потребление газа (асфальтовый завод)")
