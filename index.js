@@ -89,22 +89,19 @@ var prog = {
 			ProjectionExpression: "t_stamp, PERIOD, p_1, p_2, p_3, p_4",	ExpressionAttributeValues: { ":m_key": "GU_4",":ts":start_ts}}, function(err,data){res(data)})	
 		})
 		prog.render_sf_chart(data,"sfGU4","Добыча ПГ на ГУ-4");	
-		
-		
+				
 		data=await new Promise(res=>{			
 			prog.docClient.query({TableName: "dng7",	KeyConditionExpression: "m_key = :m_key and t_stamp>=:ts",
 			ProjectionExpression: "t_stamp, PERIOD, p_1, p_2, p_3, p_4",	ExpressionAttributeValues: { ":m_key": "GU_4_2",":ts":start_ts}}, function(err,data){res(data)})	
 		})
 		prog.render_sf_chart(data,"sfGU4_2","Добыча ПГ на ГУ-4 (Каспийск)");	
-		
-		
+				
 		const data2=await new Promise(res=>{			
 			prog.docClient.query({TableName: "dng7",	KeyConditionExpression: "m_key = :m_key and t_stamp>=:ts",
 			ProjectionExpression: "t_stamp, p_1, p_2, p_3",	ExpressionAttributeValues: { ":m_key": "KASP",":ts":start_ts}}, function(err,data){res(data)})	
 		})
 		prog.render_kirp_chart3(data2,data,"kasp","Потребление газа (Каспий Тепло Сервис)")
-		
-		
+				
 		data=await new Promise(res=>{			
 			prog.docClient.query({TableName: "dng7",	KeyConditionExpression: "m_key = :m_key and t_stamp>=:ts",
 			ProjectionExpression: "t_stamp, PERIOD, p_1, p_2, p_3, p_4",	ExpressionAttributeValues: { ":m_key": "Karanay",":ts":start_ts}}, function(err,data){res(data)})	
@@ -134,11 +131,7 @@ var prog = {
 			ProjectionExpression: "t_stamp, p_1, p_2, p_3, p_4",	ExpressionAttributeValues: { ":m_key": "VOSTOK",":ts":start_ts}}, function(err,data){res(data)})	
 		})
 		prog.render_kirp_chart(data,"vostok","Потребление газа (завод ВОСТОК)")		
-				
-				
-				
-				
-				
+
 				
 		data=await new Promise(res=>{			
 			prog.docClient.query({TableName: "dng7",	KeyConditionExpression: "m_key = :m_key and t_stamp>=:ts",
@@ -150,7 +143,7 @@ var prog = {
 			prog.docClient.query({TableName: "dng7",	KeyConditionExpression: "m_key = :m_key and t_stamp>=:ts",
 			ProjectionExpression: "t_stamp, p_1, p_2, p_3, p_4",	ExpressionAttributeValues: { ":m_key": "SABUR",":ts":start_ts}}, function(err,data){res(data)})	
 		})
-		prog.render_kirp_chart(data,"sabur","Потребление газа (завод Сабур)")
+		prog.render_kirp_chart2(data,"sabur","Потребление газа (завод Сабур)")
 				
 	},
 
