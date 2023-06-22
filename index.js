@@ -144,6 +144,14 @@ var prog = {
 			ProjectionExpression: "t_stamp, p_1, p_2, p_3, p_4",	ExpressionAttributeValues: { ":m_key": "SABUR",":ts":start_ts}}, function(err,data){res(data)})	
 		})
 		prog.render_kirp_chart2(data,"sabur","Потребление газа (завод Сабур)")
+		
+		
+		data=await new Promise(res=>{			
+			prog.docClient.query({TableName: "dng7",	KeyConditionExpression: "m_key = :m_key and t_stamp>=:ts",
+			ProjectionExpression: "t_stamp, p_1, p_2, p_3, p_4",	ExpressionAttributeValues: { ":m_key": "KONGPRIMA",":ts":start_ts}}, function(err,data){res(data)})	
+		})
+		prog.render_kongprima_chart(data,"sabur","Точка росы")
+		
 				
 	},
 
@@ -609,6 +617,38 @@ var prog = {
 	
 	
 	},	
+		
+	render_kongprima_chart : function(data, chart_name, m_title) {
+	
+		data=data.Items
+		var min_time;
+		var xv=[], trv=[],trh=[];
+		//var start_ts_h=Math.floor(Date.now() / 1000)-3*86400;
+		for (var i=0; i< data.length;i++)
+		{
+			xv.push(prog.timeConverter(data[i].t_stamp));
+			trv.push(data[i].p_1);
+			trh.push(data[i].p_2);
+		}
+		
+		
+		var plot_data=[		
+			{x:xv,y:trv, name: 'ТРВ',mode: 'lines+markers', type: 'scatter',fillcolor: 'rgba(50, 50, 50,0.5)'},
+			{x:xv,y:trh, name: 'ТРУ',mode: 'lines+markers', type: 'scatter',fillcolor: 'rgba(50, 50, 50,0.5)'},
+		];		
+				
+		var layout = {
+		  title: m_title,
+		  xaxis: {range: [prog.timeConverter(min_time), prog.timeConverter(prog.cur_time)]},
+		  responsive: true,
+		  showlegend: true
+		};
+				
+		Plotly.newPlot("kingprima",plot_data,layout, {responsive: true}); 	
+
+	
+	},	
+	
 		
 	render_test_chart: function(data, chart_name, m_title) {
 		
