@@ -259,7 +259,7 @@ var prog = {
 			yaxis2: {	side: 'right',	showgrid: false,ticks: '',	showticklabels: false,hoverformat: '.0f' },
 
 			xaxis: {
-			range:[prog.timeConverter(data_m[0].t_stamp), prog.timeConverter(prog.cur_time)],
+			range:[prog.timeConverter(data_m[0]?.t_stamp||0), prog.timeConverter(prog.cur_time)],
 			rangeselector: {buttons: [			
 
 			{
