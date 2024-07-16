@@ -90,11 +90,11 @@ var prog = {
 		})
 		prog.render_sf_chart(data,"sfGU4","Добыча ПГ на ГУ-4");	
 				
-		data=await new Promise(res=>{			
+		/*data=await new Promise(res=>{			
 			prog.docClient.query({TableName: "dng7",	KeyConditionExpression: "m_key = :m_key and t_stamp>=:ts",
 			ProjectionExpression: "t_stamp, PERIOD, p_1, p_2, p_3, p_4",	ExpressionAttributeValues: { ":m_key": "GU_4_2",":ts":start_ts}}, function(err,data){res(data)})	
 		})
-		prog.render_sf_chart(data,"sfGU4_2","Добыча ПГ на ГУ-4 (Каспийск)");	
+		prog.render_sf_chart(data,"sfGU4_2","Добыча ПГ на ГУ-4 (Каспийск)");*/	
 				
 		const data2=await new Promise(res=>{			
 			prog.docClient.query({TableName: "dng7",	KeyConditionExpression: "m_key = :m_key and t_stamp>=:ts",
@@ -126,11 +126,12 @@ var prog = {
 		})
 		prog.render_kirp_chart2(data,"osmanov","Потребление газа (завод ИП ОСМАНОВ)")		
 				
+		/*
 		data=await new Promise(res=>{			
 			prog.docClient.query({TableName: "dng7",	KeyConditionExpression: "m_key = :m_key and t_stamp>=:ts",
 			ProjectionExpression: "t_stamp, p_1, p_2, p_3, p_4",	ExpressionAttributeValues: { ":m_key": "VOSTOK",":ts":start_ts}}, function(err,data){res(data)})	
 		})
-		prog.render_kirp_chart(data,"vostok","Потребление газа (завод ВОСТОК)")		
+		prog.render_kirp_chart(data,"vostok","Потребление газа (завод ВОСТОК)")		*/
 
 				
 		data=await new Promise(res=>{			
@@ -648,8 +649,7 @@ var prog = {
 
 	
 	},	
-	
-		
+			
 	render_test_chart: function(data, chart_name, m_title) {
 		
 		data=data.Items
