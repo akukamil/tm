@@ -4,7 +4,7 @@ var prog = {
 
 	cur_time:0,
 		
-	login : function()	{
+	login()	{
 
 		let local_uid = '';
 
@@ -63,7 +63,7 @@ var prog = {
 		
 	},
 	
-	not_auth : function() {
+	not_auth () {
 		
 		document.body.innerHTML = 'неправильный логин'
 		
@@ -138,7 +138,7 @@ var prog = {
 			prog.docClient.query({TableName: "dng7",	KeyConditionExpression: "m_key = :m_key and t_stamp>=:ts",
 			ProjectionExpression: "t_stamp, p_1, p_2, p_3, p_4",	ExpressionAttributeValues: { ":m_key": "ASPHALT",":ts":start_ts}}, function(err,data){res(data)})	
 		})
-		prog.render_kirp_chart(data,"asfalt","Потребление газа (асфальтовый завод)")
+		prog.render_kirp_chart2(data,"asfalt","Потребление газа (асфальтовый завод)")
 				
 		data=await new Promise(res=>{			
 			prog.docClient.query({TableName: "dng7",	KeyConditionExpression: "m_key = :m_key and t_stamp>=:ts",
@@ -156,7 +156,7 @@ var prog = {
 				
 	},
 
-	load_data_brik : function()	{   
+	load_data_brik()	{   
 
 		var start_ts=Math.floor(Date.now() / 1000)-40*86400;
 		
@@ -174,7 +174,7 @@ var prog = {
 
 	},
 	
-	load_data_asf : function()	{   
+	load_data_asf()	{   
 
 		var start_ts=Math.floor(Date.now() / 1000)-40*86400;
 		
@@ -192,7 +192,7 @@ var prog = {
 
 	},
 	
-	load_data_test : function()	{   
+	load_data_test()	{   
 
 		var start_ts=Math.floor(Date.now() / 1000)-40*86400;
 		
@@ -211,7 +211,7 @@ var prog = {
 		
 	},
 
-	render_sf_chart : function(data, chart_name, m_title) {
+	render_sf_chart(data, chart_name, m_title) {
 		data=data.Items
 		var data_m = data.filter(data => data.PERIOD == "M");
 		var data_h = data.filter(data => data.PERIOD == "D");
@@ -316,7 +316,7 @@ var prog = {
 		
 	},
 
-	render_res_chart : function(data, chart_name, m_title) {
+	render_res_chart(data, chart_name, m_title) {
 		data=data.Items
 		
 		var xv=[], o=[], e=[], w=[];
@@ -373,7 +373,7 @@ var prog = {
 		Plotly.newPlot(chart_name,plot_data,layout, {responsive: true}); 	
 	},
 	
-	render_kirp_chart : function(data, chart_name, m_title) {
+	render_kirp_chart(data, chart_name, m_title) {
 	
 		data=data.Items
 		var min_time;
@@ -448,7 +448,7 @@ var prog = {
 	
 	},	
 	
-	render_kirp_chart2 : function(data, chart_name, m_title) {
+	render_kirp_chart2(data, chart_name, m_title) {
 	
 		data=data.Items
 
@@ -528,7 +528,7 @@ var prog = {
 	
 	},	
 	
-	render_kirp_chart3 : function(data,data2, chart_name, m_title) {
+	render_kirp_chart3(data,data2, chart_name, m_title) {
 	
 		data=data.Items
 
@@ -619,7 +619,7 @@ var prog = {
 	
 	},	
 		
-	render_kongprima_chart : function(data, chart_name, m_title) {
+	render_kongprima_chart(data, chart_name, m_title) {
 	
 		data=data.Items
 		var min_time;
@@ -650,7 +650,7 @@ var prog = {
 	
 	},	
 			
-	render_test_chart: function(data, chart_name, m_title) {
+	render_test_char(data, chart_name, m_title) {
 		
 		data=data.Items
 
@@ -730,7 +730,7 @@ var prog = {
 	
 	},
 	
-	render_mig_chart : function(data, chart_name, m_title) {
+	render_mig_chart(data, chart_name, m_title) {
 		data=data.Items
 		
 		var xv=[], v=[];
@@ -757,7 +757,7 @@ var prog = {
 		Plotly.newPlot(chart_name,plot_data,layout, {responsive: true}); 	
 	},
 		
-	render_bars_chart : function(data, chart_name, m_title){
+	render_bars_chart(data, chart_name, m_title){
 		data=data.Items
 		
 		var xv=[], v=[];
@@ -785,7 +785,7 @@ var prog = {
 		Plotly.newPlot(chart_name,plot_data,layout, {responsive: true}); 	
 	},
 
-	timeConverter : function(UNIX_timestamp){
+	timeConverter(UNIX_timestamp){
 		var date = new Date(UNIX_timestamp * 1000);
 		var hours = date.getHours();
 		var minutes = "0" + date.getMinutes();
