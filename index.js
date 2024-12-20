@@ -89,6 +89,20 @@ var prog = {
 			ProjectionExpression: "t_stamp, PERIOD, p_1, p_2, p_3, p_4",	ExpressionAttributeValues: { ":m_key": "GU_4",":ts":start_ts}}, function(err,data){res(data)})	
 		})
 		prog.render_sf_chart(data,"sfGU4","Добыча ПГ на ГУ-4");	
+		
+		data=await new Promise(res=>{			
+			prog.docClient.query({TableName: "dng7",	KeyConditionExpression: "m_key = :m_key and t_stamp>=:ts",
+			ProjectionExpression: "t_stamp, PERIOD, p_1, p_2, p_3, p_4",	ExpressionAttributeValues: { ":m_key": "AGRS_PG",":ts":start_ts}}, function(err,data){res(data)})	
+		})
+		prog.render_sf_chart(data,"sfAGRS_PG","АГРС Махачкала (ПГ)");	
+		
+		
+		data=await new Promise(res=>{			
+			prog.docClient.query({TableName: "dng7",	KeyConditionExpression: "m_key = :m_key and t_stamp>=:ts",
+			ProjectionExpression: "t_stamp, PERIOD, p_1, p_2, p_3, p_4",	ExpressionAttributeValues: { ":m_key": "AGRS_PNG",":ts":start_ts}}, function(err,data){res(data)})	
+		})
+		prog.render_sf_chart(data,"sfAGRS_PNG","АГРС Махачкала (ПНГ)");	
+		
 				
 		/*data=await new Promise(res=>{			
 			prog.docClient.query({TableName: "dng7",	KeyConditionExpression: "m_key = :m_key and t_stamp>=:ts",
@@ -96,11 +110,6 @@ var prog = {
 		})
 		prog.render_sf_chart(data,"sfGU4_2","Добыча ПГ на ГУ-4 (Каспийск)");*/	
 				
-		const data2=await new Promise(res=>{			
-			prog.docClient.query({TableName: "dng7",	KeyConditionExpression: "m_key = :m_key and t_stamp>=:ts",
-			ProjectionExpression: "t_stamp, p_1, p_2, p_3",	ExpressionAttributeValues: { ":m_key": "KASP",":ts":start_ts}}, function(err,data){res(data)})	
-		})
-		prog.render_kirp_chart3(data2,data,"kasp","Потребление газа (Каспий Тепло Сервис)")
 				
 		data=await new Promise(res=>{			
 			prog.docClient.query({TableName: "dng7",	KeyConditionExpression: "m_key = :m_key and t_stamp>=:ts",
