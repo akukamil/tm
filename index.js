@@ -86,7 +86,7 @@ var prog = {
 		
 		data=await new Promise(res=>{			
 			prog.docClient.query({TableName: "dng7",	KeyConditionExpression: "m_key = :m_key and t_stamp>=:ts",
-			ProjectionExpression: "t_stamp, PERIOD, p_1, p_2, p_3, p_4",	ExpressionAttributeValues: { ":m_key": "GU_4",":ts":start_ts}}, function(err,data){res(data)})	
+			ProjectionExpression: "t_stamp, PERIOD, p_1, p_2, p_3, p_4, p_5",	ExpressionAttributeValues: { ":m_key": "GU_4",":ts":start_ts}}, function(err,data){res(data)})	
 		})
 		prog.render_sf_chart(data,"sfGU4","Добыча ПГ на ГУ-4");	
 		
@@ -102,15 +102,13 @@ var prog = {
 			ProjectionExpression: "t_stamp, PERIOD, p_1, p_2, p_3, p_4",	ExpressionAttributeValues: { ":m_key": "AGRS_PNG",":ts":start_ts}}, function(err,data){res(data)})	
 		})
 		prog.render_sf_chart(data,"sfAGRS_PNG","АГРС Махачкала (ПНГ)");	
-		
-				
+						
 		/*data=await new Promise(res=>{			
 			prog.docClient.query({TableName: "dng7",	KeyConditionExpression: "m_key = :m_key and t_stamp>=:ts",
 			ProjectionExpression: "t_stamp, PERIOD, p_1, p_2, p_3, p_4",	ExpressionAttributeValues: { ":m_key": "GU_4_2",":ts":start_ts}}, function(err,data){res(data)})	
 		})
 		prog.render_sf_chart(data,"sfGU4_2","Добыча ПГ на ГУ-4 (Каспийск)");*/	
-				
-				
+								
 		data=await new Promise(res=>{			
 			prog.docClient.query({TableName: "dng7",	KeyConditionExpression: "m_key = :m_key and t_stamp>=:ts",
 			ProjectionExpression: "t_stamp, PERIOD, p_1, p_2, p_3, p_4",	ExpressionAttributeValues: { ":m_key": "Karanay",":ts":start_ts}}, function(err,data){res(data)})	
@@ -157,11 +155,11 @@ var prog = {
 		prog.render_kirp_chart2(data,"sabur","Потребление газа (завод Сабур)")
 		
 		
-		data=await new Promise(res=>{			
+		/*data=await new Promise(res=>{			
 			prog.docClient.query({TableName: "dng7",	KeyConditionExpression: "m_key = :m_key and t_stamp>=:ts",
 			ProjectionExpression: "t_stamp, p_1, p_2, p_3, p_4",	ExpressionAttributeValues: { ":m_key": "KONGPRIMA",":ts":start_ts}}, function(err,data){res(data)})	
 		})
-		prog.render_kongprima_chart(data,"sabur","Точка росы")
+		prog.render_kongprima_chart(data,"sabur","Точка росы")*/
 		
 				
 	},
@@ -228,7 +226,7 @@ var prog = {
 		var data_h = data.filter(data => data.PERIOD == "D");
 		data=0;
 		
-		var xv=[], q=[], v=[], t=[], p=[], vt=[];
+		var xv=[], q=[], v=[], t=[], p=[], dp=[], vt=[];
 		for (var i=0; i< data_m.length;i++)
 		{
 			xv.push(prog.timeConverter(data_m[i].t_stamp));
@@ -236,6 +234,7 @@ var prog = {
 			t.push(data_m[i].p_2);
 			v.push(data_m[i].p_3);
 			vt.push(data_m[i].p_4);
+			dp.push(data_m[i].p_5);
 		}
 		
 		
@@ -253,22 +252,20 @@ var prog = {
 		}
 
 		var plot_data=[
-			{x:xv,y:v, name: '__V, m3 __',fillcolor: 'rgba(150, 150, 50,0.5)',yaxis: 'y2', stackgroup: 'one',line: { color: 'rgb(150, 150, 150)'}},   		
-			{x:xv,y:p, name: '__P, kPa__',fillcolor: 'rgba(150, 150, 50,0.5)',visible:'legendonly',line: { color: 'rgb(150, 150, 50)'}},
-			{x:xv,y:t, name: '__T, C____',fillcolor: 'rgba(150, 150, 50,0.5)',visible:'legendonly',line: { color: 'rgb(50, 150, 50)'}},  	
-			{x:xv,y:vt, name: '__Vt, m3__',fillcolor: 'rgba(150, 150, 50,0.5)',visible:'legendonly',line: { color: 'rgb(50, 150, 150)'}},  	
-			{x:xv2,y:q, name:'__Q, m3/h_',fillcolor: 'rgba(150, 150, 50,0.5)',line: { color: 'rgb(150, 50, 50)'}},               
-			
-			
-			
+			{x:xv,y:v, name: '__V, m3 __',fillcolor: 'rgba(150, 150, 50,0.5)',hovertemplate: '%{y:.0f}',yaxis: 'y2', stackgroup: 'one',line: { color: 'rgb(150, 150, 150)'}},   		
+			{x:xv,y:p, name: '__P, kPa__',fillcolor: 'rgba(150, 150, 50,0.5)',hovertemplate: '%{y:.0f}',visible:'legendonly',line: { color: 'rgb(150, 150, 50)'}},
+			{x:xv,y:dp, name: '__dP, kPa__',fillcolor: 'rgba(150, 150, 50,0.5)',hovertemplate: '%{y:.2f}<extra></extra>' ,visible:'legendonly',line: { color: 'rgb(150, 150, 50)'}},
+			{x:xv,y:t, name: '__T, C____',fillcolor: 'rgba(150, 150, 50,0.5)',hovertemplate: '%{y:.0f}',visible:'legendonly',line: { color: 'rgb(50, 150, 50)'}},  	
+			{x:xv,y:vt, name: '__Vt, m3__',fillcolor: 'rgba(150, 150, 50,0.5)',hovertemplate: '%{y:.0f}',visible:'legendonly',line: { color: 'rgb(50, 150, 150)'}},  	
+			{x:xv2,y:q, name:'__Q, m3/h_',fillcolor: 'rgba(150, 150, 50,0.5)',hovertemplate: '%{y:.0f}',line: { color: 'rgb(150, 50, 50)'}},               
 		];		
 				
 		var layout = {
 			title: m_title,
 			responsive: true,
 			autorange: true,
-			yaxis: {	overlaying: 'y2',side: 'left',hoverformat: '.0f'},
-			yaxis2: {	side: 'right',	showgrid: false,ticks: '',	showticklabels: false,hoverformat: '.0f' },
+			yaxis: {	overlaying: 'y2',side: 'left'},
+			yaxis2: {	side: 'right',	showgrid: false,ticks: '',	showticklabels: false},
 
 			xaxis: {
 			range:[prog.timeConverter(data_m[0]?.t_stamp||0), prog.timeConverter(prog.cur_time)],
