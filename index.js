@@ -12,7 +12,7 @@ var prog = {
 		local_uid = local_uid || '';
 		
 		local_uid = prompt('Введите логин', local_uid);
-		if (local_uid !== '') {
+		if (local_uid) {
 			try {localStorage.setItem('tm_login', local_uid)} catch(e){}
 		}
 
