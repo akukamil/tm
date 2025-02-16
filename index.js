@@ -8,12 +8,12 @@ var prog = {
 
 		let local_uid = '';
 
-		try {local_uid = localStorage.getItem('login')} catch(e){};
+		try {local_uid = localStorage.getItem('tm_login')} catch(e){};
 		local_uid = local_uid || '';
 		
 		local_uid = prompt('Введите логин', local_uid);
 		if (local_uid !== '') {
-			try {localStorage.setItem('login', local_uid)} catch(e){}
+			try {localStorage.setItem('tm_login', local_uid)} catch(e){}
 		}
 
 		this.cur_time=Date.now()*0.001+1000;
