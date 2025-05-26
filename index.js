@@ -1,7 +1,5 @@
-
-var prog = {
+prog = {
 	
-
 	cur_time:0,
 		
 	login()	{
@@ -71,7 +69,7 @@ var prog = {
 
 	async load_data_dng()	{   
 
-		var start_ts=Math.floor(Date.now() / 1000)-40*86400;
+		const start_ts=Math.floor(Date.now() / 1000)-40*86400;
 		
 
 		document.getElementById('alliance').style.display = 'none';
@@ -161,7 +159,10 @@ var prog = {
 		})
 		prog.render_kongprima_chart(data,"sabur","Точка росы")*/
 		
-				
+		setTimeout(()=>{
+			prog.load_data_dng();
+		},60000)
+			
 	},
 
 	load_data_brik()	{   
@@ -222,36 +223,32 @@ var prog = {
 
 	render_sf_chart(data, chart_name, m_title) {
 		data=data.Items
-		var data_m = data.filter(data => data.PERIOD == "M");
-		var data_h = data.filter(data => data.PERIOD == "D");
+		let data_m = data.filter(data => data.PERIOD == 'M');
+		let data_h = data.filter(data => data.PERIOD == 'D');
 		data=0;
 		
-		var xv=[], q=[], v=[], t=[], p=[], dp=[], vt=[];
-		for (var i=0; i< data_m.length;i++)
-		{
+		let xv=[], q=[], v=[], t=[], p=[], dp=[], vt=[];
+		for (let i=0; i< data_m.length;i++) {
 			xv.push(prog.timeConverter(data_m[i].t_stamp));
 			p.push(data_m[i].p_1);
 			t.push(data_m[i].p_2);
 			v.push(data_m[i].p_3);
 			vt.push(data_m[i].p_4);
 			dp.push(data_m[i].p_5);
-		}
-		
+		}		
 		
 		//вычисляем мгновенный дебит
-		var xv2=[]
-		for (var i=2; i< data_m.length;i+=1)
-		{
-			var dif_v=data_m[i].p_3-data_m[i-2].p_3;
-			if (dif_v>0)
-			{			
-			xv2.push(prog.timeConverter(data_m[i].t_stamp));
-			var q_est=3600*(dif_v)/(data_m[i].t_stamp-data_m[i-2].t_stamp);
-			q.push(q_est);			
+		let xv2=[]
+		for (let i=2; i< data_m.length;i+=1) {
+			let dif_v=data_m[i].p_3-data_m[i-2].p_3;
+			if (dif_v>0) {			
+				xv2.push(prog.timeConverter(data_m[i].t_stamp));
+				let q_est=3600*(dif_v)/(data_m[i].t_stamp-data_m[i-2].t_stamp);
+				q.push(q_est);			
 			}
 		}
 
-		var plot_data=[
+		let plot_data=[
 			{x:xv,y:v, name: '__V, m3 __',fillcolor: 'rgba(150, 150, 50,0.5)',hovertemplate: '%{y:.0f}',yaxis: 'y2', stackgroup: 'one',line: { color: 'rgb(150, 150, 150)'}},   		
 			{x:xv,y:p, name: '__P, kPa__',fillcolor: 'rgba(150, 150, 50,0.5)',hovertemplate: '%{y:.0f}',visible:'legendonly',line: { color: 'rgb(150, 150, 50)'}},
 			{x:xv,y:dp, name: '__dP, kPa__',fillcolor: 'rgba(150, 150, 50,0.5)',hovertemplate: '%{y:.2f}<extra></extra>' ,visible:'legendonly',line: { color: 'rgb(150, 150, 50)'}},
@@ -260,50 +257,55 @@ var prog = {
 			{x:xv2,y:q, name:'__Q, m3/h_',fillcolor: 'rgba(150, 150, 50,0.5)',hovertemplate: '%{y:.0f}',line: { color: 'rgb(150, 50, 50)'}},               
 		];		
 				
-		var layout = {
+		let layout = {
 			title: m_title,
 			responsive: true,
 			autorange: true,
-			yaxis: {	overlaying: 'y2',side: 'left'},
-			yaxis2: {	side: 'right',	showgrid: false,ticks: '',	showticklabels: false},
+			yaxis: {overlaying: 'y2',side: 'left'},
+			yaxis2: {side: 'right',	showgrid: false,ticks: '',	showticklabels: false},
 
 			xaxis: {
 			range:[prog.timeConverter(data_m[0]?.t_stamp||0), prog.timeConverter(prog.cur_time)],
-			rangeselector: {buttons: [			
-
-			{
-			count: 1,
-			label: '1h',
-			step: 'hour',
-			stepmode: 'backward',
-			active: true
+			rangeselector: {
+				buttons: [
+					{
+						count: 1,
+						label: '1h',
+						step: 'hour',
+						stepmode: 'backward',
+						active: false
+					},
+					{
+						count: 2,
+						label: '1d',
+						step: 'day',
+						stepmode: 'backward',
+						active: false
+					},
+					{
+						count: 3,
+						label: '3d',
+						step: 'day',
+						stepmode: 'backward',
+						active: false
+					},
+					{
+						count: 4,
+						step: 'all',
+						active: false
+					}
+				]
 			},
-			{
-			  count: 1,
-			  label: '1d',
-			  step: 'day',
-			  stepmode: 'backward',
-			  active: true
-			},
-			{
-			  count: 3,
-			  label: '3d',
-			  step: 'day',
-			  stepmode: 'backward'
-			},
-			{step: 'all'}
-			]},
 			type: 'date'
 			},
 		  
 		};
-				
-		Plotly.newPlot(chart_name+"_up",plot_data,layout, {responsive: true}); 	
+		
+		Plotly.react(chart_name+"_up",plot_data,layout, {responsive: true}); 	
 			
 		//Отображаем дневные данные
-		var xv=[], v=[];
-		for (var i=0; i< data_h.length;i++)
-		{
+		xv=[], v=[];
+		for (var i=0; i< data_h.length;i++) {
 			xv.push(prog.timeConverter(data_h[i].t_stamp));
 			v.push(data_h[i].p_1);
 		}
