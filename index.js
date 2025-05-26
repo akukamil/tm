@@ -322,7 +322,7 @@ prog = {
 		var plot_data2=[
 			{x:xv,y:v, name: '__V, m3 __',fillcolor: 'rgba(150, 150, 50,0.5)',type: "bar",line: { color: 'rgb(150, 150, 50)'}},
 		];	
-		Plotly.newPlot(chart_name+"_dw",plot_data2,layout2);  	
+		Plotly.react(chart_name+"_dw",plot_data2,layout2);  	
 		
 	},
 
@@ -380,7 +380,7 @@ prog = {
 		  
 		};
 				
-		Plotly.newPlot(chart_name,plot_data,layout, {responsive: true}); 	
+		Plotly.react(chart_name,plot_data,layout, {responsive: true}); 	
 	},
 	
 	render_kirp_chart(data, chart_name, m_title) {
@@ -424,11 +424,17 @@ prog = {
 		  showlegend: true
 		};
 				
-		Plotly.newPlot(chart_name+"_up",plot_data,layout, {responsive: true}); 	
+		Plotly.react(chart_name+"_up",plot_data,layout, {responsive: true}); 	
 
 
 		var start_ts_d=Math.floor(Date.now() / 1000)-8*86400;
-		var tableRef = document.getElementById(chart_name+'_table');		
+		var tableRef = document.getElementById(chart_name+'_table');	
+
+		//удаляем старое
+		var rows = tableRef.getElementsByTagName("tr");
+		while (rows.length > 1)
+			tableRef.deleteRow(1);
+		
 		row_cnt=1
 		prv_v=0
 		for (let i=0;i<data.length;i++) {	
@@ -500,11 +506,18 @@ prog = {
 		  showlegend: true
 		};
 				
-		Plotly.newPlot(chart_name+"_up",plot_data,layout, {responsive: true}); 	
+		Plotly.react(chart_name+"_up",plot_data,layout, {responsive: true}); 	
 
 
 		var start_ts_d=Math.floor(Date.now() / 1000)-8*86400;
-		var tableRef = document.getElementById(chart_name+'_table');		
+		var tableRef = document.getElementById(chart_name+'_table');	
+
+		//удаляем старое
+		var rows = tableRef.getElementsByTagName("tr");
+		while (rows.length > 1)
+			tableRef.deleteRow(1);
+
+		
 		row_cnt=1
 		prv_v=0
 		day_of_check=-1;
@@ -594,11 +607,19 @@ prog = {
 		  showlegend: true
 		};
 				
-		Plotly.newPlot(chart_name+"_up",plot_data,layout, {responsive: true}); 	
+		Plotly.react(chart_name+"_up",plot_data,layout, {responsive: true}); 	
 
 
 		var start_ts_d=Math.floor(Date.now() / 1000)-8*86400;
-		var tableRef = document.getElementById(chart_name+'_table');		
+		var tableRef = document.getElementById(chart_name+'_table');	
+
+
+		//удаляем старое
+		var rows = tableRef.getElementsByTagName("tr");
+		while (rows.length > 1)
+			tableRef.deleteRow(1);
+
+		
 		row_cnt=1
 		prv_v=0
 		for (let i=0;i<data.length;i++) {	
