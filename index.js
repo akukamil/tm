@@ -170,13 +170,10 @@ prog = {
 		var start_ts=Math.floor(Date.now() / 1000)-40*86400;
 		
 		document.getElementById('sfGU4').style.display = 'none';
-		//document.getElementById('sfGU4_2').style.display = 'none';
 		document.getElementById('sfKARANAY').style.display = 'none';
-		document.getElementById('alliance').style.display = 'none';
 		document.getElementById('zarya').style.display = 'none';
 		document.getElementById('osmanov').style.display = 'none';
 		document.getElementById('sabur').style.display = 'none';
-		document.getElementById('kasp').style.display = 'none';
 		document.getElementById('asfalt').style.display = 'none';
 		
 		prog.docClient.query({TableName: "dng7",	KeyConditionExpression: "m_key = :m_key and t_stamp>=:ts",
@@ -189,13 +186,11 @@ prog = {
 		var start_ts=Math.floor(Date.now() / 1000)-40*86400;
 		
 		document.getElementById('sfGU4').style.display = 'none';
-		document.getElementById('sfGU4_2').style.display = 'none';
 		document.getElementById('sfKARANAY').style.display = 'none';
-		document.getElementById('alliance').style.display = 'none';
 		document.getElementById('zarya').style.display = 'none';
 		document.getElementById('sabur').style.display = 'none';
-		document.getElementById('kasp').style.display = 'none';
 		document.getElementById('bricks').style.display = 'none';
+		document.getElementById('osmanov').style.display = 'none';
 		
 		prog.docClient.query({TableName: "dng7",	KeyConditionExpression: "m_key = :m_key and t_stamp>=:ts",
 		ProjectionExpression: "t_stamp, p_1, p_2, p_3",	ExpressionAttributeValues: { ":m_key": "ASPHALT",":ts":start_ts}}, function(err,data){prog.render_kirp_chart(data,"asfalt","Потребление газа (Асфальтовый завод)")});
