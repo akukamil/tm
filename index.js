@@ -72,7 +72,7 @@ prog = {
 		const start_ts=Math.floor(Date.now() / 1000)-40*86400;
 		
 
-		document.getElementById('alliance').style.display = 'none';
+		//document.getElementById('alliance').style.display = 'none';
 		//document.getElementById('zarya').style.display = 'none';
 		//docClient.query({TableName: "dng7",	KeyConditionExpression: "m_key = :m_key and t_stamp>=:ts",	
 		//ProjectionExpression: "t_stamp, PERIOD, p_1, p_2, p_3, p_4",	ExpressionAttributeValues: { ":m_key": "AGRS_1",":ts":start_ts}}, function(err,data){render_sf_chart(data,"sf0","Добыча ПНГ на АГРС Махачкала")});	
