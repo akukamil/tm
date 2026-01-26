@@ -247,8 +247,9 @@ prog = {
 		let layout = {
 			title: m_title,
 			responsive: true,
-			autorange: true,
-			yaxis: {overlaying: 'y2',side: 'left'},
+			
+			
+			yaxis: {overlaying: 'y2',side: 'left',rangemode: 'tozero'},
 			yaxis2: {side: 'right',	showgrid: false,ticks: '',	showticklabels: false},
 
 			xaxis: {
