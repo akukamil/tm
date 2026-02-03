@@ -69,6 +69,10 @@ prog = {
 
 	async load_data_dng()	{   
 
+		setTimeout(()=>{
+			prog.load_data_dng();
+		},60000)
+
 		const start_ts=Math.floor(Date.now() / 1000)-40*86400;
 		
 		let data;
@@ -141,9 +145,7 @@ prog = {
 		})
 		prog.render_kongprima_chart(data,"sabur","Точка росы")*/
 		
-		setTimeout(()=>{
-			prog.load_data_dng();
-		},60000)
+
 			
 	},
 
