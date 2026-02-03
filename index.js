@@ -303,7 +303,7 @@ prog = {
 		var plot_data2=[
 			{x:xv,y:v, name: '__V, m3 __',fillcolor: 'rgba(150, 150, 50,0.5)',type: "bar",line: { color: 'rgb(150, 150, 50)'}},
 		];	
-		Plotly.react(chart_name+"_dw",plot_data2,layout2);  	
+		Plotly.react(chart_name+"_dw",plot_data2,layout2, {responsive: true});  	
 		
 	},
 
