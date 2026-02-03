@@ -1,3 +1,5 @@
+time_str=()=>{return (new Date()).toLocaleString('ru-RU')}
+
 prog = {
 	
 	cur_time:0,
@@ -71,14 +73,15 @@ prog = {
 	},
 
 	async load_data_dng()	{  
-
+		
+		console.log(time_str(),'load_data_dng...')
 		const start_ts=Math.floor(Date.now() / 1000)-40*86400;
 		
 		let data;
 		
 		data=await new Promise(res=>{			
 			prog.docClient.query({TableName: "dng7",	KeyConditionExpression: "m_key = :m_key and t_stamp>=:ts",
-			ProjectionExpression: "t_stamp, PERIOD, p_1, p_2, p_3, p_4, p_5",	ExpressionAttributeValues: { ":m_key": "GU_4",":ts":start_ts}}, function(err,data){console.log(err);res(data)})	
+			ProjectionExpression: "t_stamp, PERIOD, p_1, p_2, p_3, p_4, p_5",	ExpressionAttributeValues: { ":m_key": "GU_4",":ts":start_ts}}, function(err,data){res(data)})	
 		})
 		prog.render_sf_chart(data,"sfGU4","Добыча ПГ на ГУ-4");	
 		
@@ -200,7 +203,7 @@ prog = {
 	},
 
 	render_sf_chart(data, chart_name, m_title) {
-		console.log('обновлен')
+	
 		data=data.Items
 		let data_m = data.filter(data => data.PERIOD == 'M');
 		let data_h = data.filter(data => data.PERIOD == 'D');
