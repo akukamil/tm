@@ -35,7 +35,10 @@ prog = {
 			alert('Неправильный часовой пояс');
 		
 		if (local_uid === 'dng') {
-			this.load_data_dng();			
+			this.load_data_dng();
+			setInterval(()=>{
+				this.load_data_dng();
+			},60000)
 			return;
 		}
 		
@@ -67,11 +70,7 @@ prog = {
 		
 	},
 
-	async load_data_dng()	{   
-
-		setTimeout(()=>{
-			prog.load_data_dng();
-		},60000)
+	async load_data_dng()	{  
 
 		const start_ts=Math.floor(Date.now() / 1000)-40*86400;
 		
