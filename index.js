@@ -1,11 +1,16 @@
 time_str=()=>{return (new Date()).toLocaleString('ru-RU')}
+irnd = function(min,max) {
+	min = Math.ceil(min);
+	max = Math.floor(max);
+	return Math.floor(Math.random() * (max - min + 1)) + min;
+}
 
 prog = {
 	
 	cur_time:0,
 		
 	login()	{
-
+		
 		let local_uid = '';
 
 		try {local_uid = localStorage.getItem('tm_login')} catch(e){};
@@ -16,7 +21,7 @@ prog = {
 			try {localStorage.setItem('tm_login', local_uid)} catch(e){}
 		}
 
-		this.cur_time=Date.now()*0.001+1000;
+		
 		
 		let k1='AKIAVLPJFT'
 		let k2='NLDJX2T6P6'
@@ -74,6 +79,7 @@ prog = {
 
 	async load_data_dng()	{  
 		
+		this.cur_time=Date.now()*0.001+1000;
 		console.log(time_str(),'load_data_dng...')
 		const start_ts=Math.floor(Date.now() / 1000)-40*86400;
 		
@@ -183,25 +189,6 @@ prog = {
 
 	},
 	
-	load_data_test()	{   
-
-		var start_ts=Math.floor(Date.now() / 1000)-40*86400;
-		
-		document.getElementById('sf0').style.display = 'none';
-		document.getElementById('sf1').style.display = 'none';
-		document.getElementById('sf2').style.display = 'none';
-		document.getElementById('sf3').style.display = 'none';
-		document.getElementById('alliance').style.display = 'none';
-		document.getElementById('zarya').style.display = 'none';
-		document.getElementById('bricks').style.display = 'none';
-		document.getElementById('kasp').style.display = 'none';
-		document.getElementById('asfalt').style.display = 'none';
-		
-		prog.docClient.query({TableName: "dng7",	KeyConditionExpression: "m_key = :m_key and t_stamp>=:ts",
-		ProjectionExpression: "t_stamp, p_1, p_2, p_3, p_4",	ExpressionAttributeValues: { ":m_key": "SABUR",":ts":start_ts}}, function(err,data){prog.render_test_chart(data,"sabur","Потребление газа (завод Сабур)")});	
-		
-	},
-
 	render_sf_chart(data, chart_name, m_title) {
 	
 		data=data.Items
@@ -284,6 +271,7 @@ prog = {
 		  
 		};
 		
+		Plotly.newPlot(chart_name+"_up")
 		Plotly.react(chart_name+"_up",plot_data,layout, {responsive: true}); 	
 			
 		//Отображаем дневные данные
@@ -305,6 +293,7 @@ prog = {
 		var plot_data2=[
 			{x:xv,y:v, name: '__V, m3 __',fillcolor: 'rgba(150, 150, 50,0.5)',type: "bar",line: { color: 'rgb(150, 150, 50)'}},
 		];	
+		Plotly.newPlot(chart_name+"_dw")
 		Plotly.react(chart_name+"_dw",plot_data2,layout2, {responsive: true});  	
 		
 	},
