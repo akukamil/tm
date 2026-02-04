@@ -271,7 +271,7 @@ prog = {
 		  
 		};
 		
-		Plotly.newPlot(chart_name+"_up")
+		//Plotly.newPlot(chart_name+"_up")
 		Plotly.react(chart_name+"_up",plot_data,layout, {responsive: true}); 	
 			
 		//Отображаем дневные данные
