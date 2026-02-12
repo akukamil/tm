@@ -45,7 +45,7 @@ prog = {
 			this.load_data_dng();
 			setInterval(()=>{
 				this.load_data_dng();
-			},60000)
+			},180000)
 			return;
 		}
 		
