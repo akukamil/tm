@@ -246,7 +246,7 @@ prog = {
 						active: false
 					},
 					{
-						count: 2,
+						count: 1,
 						label: '1d',
 						step: 'day',
 						stepmode: 'backward',
